@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import './bootstrap.min.css';
 import Header from '../src/components/Header';
-import NewDate from '../src/components/NewDate';
+import NewAppointment from './components/NewAppointment';
 
 class App extends PureComponent {
 	state = {};
@@ -12,7 +12,7 @@ class App extends PureComponent {
 				<Header title="Patient Manager" />
 				<div className="row">
 					<div className="col-md-10 mx-auto">
-						<NewDate />
+						<NewAppointment />
 					</div>
 				</div>
 			</div>
