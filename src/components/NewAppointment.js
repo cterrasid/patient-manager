@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
+import uuid from 'uuid';
+
+const initialState = {
+	appointment: {
+		pet: '',
+		owner: '',
+		date: '',
+		time: '',
+		symptoms: '',
+	},
+	error: false,
+};
 
 class NewAppointment extends Component {
-	state = {
-		appointment: {
-			pet: '',
-			owner: '',
-			date: '',
-			time: '',
-			symptoms: '',
-		},
-		error: false,
-	};
+	state = { ...initialState };
 
 	//Cuando el usuario escribe en los inputs
 	handleChange = e => {
-		console.log(`${e.target.name}: ${e.target.value}`);
-
 		this.setState({
 			appointment: {
 				//se toma una copia del state para que no se pierda lo que tenía antes
@@ -42,14 +43,29 @@ class NewAppointment extends Component {
 			return;
 		}
 
+		//generar objeto con los datos (cita con id incluído)
+		const newAppointment = { ...this.state.appointment };
+		newAppointment.id = uuid();
+
 		//agregar la cita al state principal (App)
+		this.props.createNewAppointment(newAppointment);
+
+		//colocar en el state, initialState
+		this.setState({ ...initialState });
 	};
 
 	render() {
+		const { error } = this.state;
+
 		return (
 			<div className="card mt-5 py-5">
 				<div className="card-body">
 					<h2 className="card-title text-center mb-5">Fill the form to create a new date!</h2>
+					{error ? (
+						<div className="alert alert-danger mt-2 mb-5 text-center">All the fields are mantatory</div>
+					) : (
+						''
+					)}
 					<form onSubmit={this.handleSubmit}>
 						{/*PET NAME */}
 						<div className="form-group row">
@@ -61,7 +77,7 @@ class NewAppointment extends Component {
 									placeholder="Pet's name"
 									name="pet"
 									onChange={this.handleChange}
-									value={this.state.pet}
+									value={this.state.appointment.pet}
 								/>
 							</div>
 						</div>
@@ -75,7 +91,7 @@ class NewAppointment extends Component {
 									placeholder="Owner's name"
 									name="owner"
 									onChange={this.handleChange}
-									value={this.state.owner}
+									value={this.state.appointment.owner}
 								/>
 							</div>
 						</div>
@@ -88,7 +104,7 @@ class NewAppointment extends Component {
 									className="form-control"
 									name="date"
 									onChange={this.handleChange}
-									value={this.state.date}
+									value={this.state.appointment.date}
 								/>
 							</div>
 							<label className="col-sm-4 col-lg-2 col-form-label">Time</label>
@@ -98,7 +114,7 @@ class NewAppointment extends Component {
 									className="form-control"
 									name="time"
 									onChange={this.handleChange}
-									value={this.state.time}
+									value={this.state.appointment.time}
 								/>
 							</div>
 						</div>
@@ -111,7 +127,7 @@ class NewAppointment extends Component {
 									name="symptoms"
 									placeholder="Describe the symptoms"
 									onChange={this.handleChange}
-									value={this.state.symptoms}
+									value={this.state.appointment.symptoms}
 								></textarea>
 							</div>
 						</div>
