@@ -17,6 +17,18 @@ class App extends PureComponent {
 		this.setState({ appointmentCollector });
 	};
 
+	//Eliminar cita de la lista(del state)
+	deleteAppointment = id => {
+		//Crear una copia del state
+		const currentAppointments = [...this.state.appointmentCollector];
+
+		//Utilizar filter para sacar el @id del array
+		const appointmentCollector = currentAppointments.filter(appointment => appointment.id !== id);
+
+		//actualizar el state
+		this.setState({ appointmentCollector });
+	};
+
 	render() {
 		return (
 			<div className="container">
@@ -26,7 +38,10 @@ class App extends PureComponent {
 						<NewAppointment createNewAppointment={this.createNewAppointment} />
 					</div>
 					<div className="mt-5 col-md-10 mx-auto">
-						<ListOfAppointments appointments={this.state.appointmentCollector} />
+						<ListOfAppointments
+							appointments={this.state.appointmentCollector}
+							deleteAppointment={this.deleteAppointment}
+						/>
 					</div>
 				</div>
 			</div>
