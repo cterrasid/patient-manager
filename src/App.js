@@ -6,27 +6,43 @@ import ListOfAppointments from './components/ListOfAppointments';
 
 class App extends PureComponent {
 	state = {
-		appointmentCollector: [],
+		appointments: [],
 	};
+
+	//Cuando cargue el componente
+	componentDidMount() {
+		const appointmentsLS = localStorage.getItem('appointments');
+		if (appointmentsLS) {
+			this.setState({
+				appointments: JSON.parse(appointmentsLS),
+			});
+		}
+	}
+
+	//Cuando se elimina o agrega una cita!
+	//Este metodo revisa el state y guarda lo que se agregue o elimine de alli
+	componentDidUpdate() {
+		localStorage.setItem('appointments', JSON.stringify(this.state.appointments));
+	}
 
 	createNewAppointment = data => {
 		//copiar el state actual
-		const appointmentCollector = [...this.state.appointmentCollector, data];
+		const appointments = [...this.state.appointments, data];
 
 		//agregar el nuevo state
-		this.setState({ appointmentCollector });
+		this.setState({ appointments });
 	};
 
 	//Eliminar cita de la lista(del state)
 	deleteAppointment = id => {
 		//Crear una copia del state
-		const currentAppointments = [...this.state.appointmentCollector];
+		const currentAppointments = [...this.state.appointments];
 
 		//Utilizar filter para sacar el @id del array
-		const appointmentCollector = currentAppointments.filter(appointment => appointment.id !== id);
+		const appointments = currentAppointments.filter(appointment => appointment.id !== id);
 
 		//actualizar el state
-		this.setState({ appointmentCollector });
+		this.setState({ appointments });
 	};
 
 	render() {
@@ -39,7 +55,7 @@ class App extends PureComponent {
 					</div>
 					<div className="mt-5 col-md-10 mx-auto">
 						<ListOfAppointments
-							appointments={this.state.appointmentCollector}
+							appointments={this.state.appointments}
 							deleteAppointment={this.deleteAppointment}
 						/>
 					</div>
