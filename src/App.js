@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import './bootstrap.min.css';
+import "bootswatch/dist/sketchy/bootstrap.min.css"; 
 import Header from '../src/components/Header';
 import NewAppointment from './components/NewAppointment';
 import ListOfAppointments from './components/ListOfAppointments';
